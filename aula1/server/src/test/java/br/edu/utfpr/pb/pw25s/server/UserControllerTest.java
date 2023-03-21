@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.pw25s.server;
 
+import br.edu.utfpr.pb.pw25s.server.error.ApiError;
 import br.edu.utfpr.pb.pw25s.server.model.User;
 import br.edu.utfpr.pb.pw25s.server.repository.UserRepository;
 import br.edu.utfpr.pb.pw25s.server.shared.GenericResponse;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -116,12 +118,43 @@ public class UserControllerTest {
     @Test
     public void postUser_whenUserHasPasswordAllLowerCase_receiveBadRequest() {
         User user = createValidUser();
-
         user.setPassword("password");
         ResponseEntity<Object> response = postSignup(user, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @Test
+    public void postUser_whenUserIsInvalid_receiveApiError() {
+        User user = new User();
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        assertThat(response.getBody().getUrl()).isEqualTo(API_USERS);
+    }
+
+    @Test
+    public void postUser_whenUserIsInvalid_receiveApiErrorWithValidationErrors() {
+        User user = new User();
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        assertThat(response.getBody().getValidationErrors().size()).isEqualTo(3);
+    }
+    @Test
+    public void postUser_whenUserHasNullUsername_receiveMessageOfNullUsername() {
+        User user = createValidUser();
+        user.setUsername(null);
+        ResponseEntity<ApiError> response = postSignup(user, ApiError.class);
+        Map<String, String> validationErrors = response.getBody().getValidationErrors();
+
+        assertThat(validationErrors.get("username"))
+                .isEqualTo("O 'usuário' não pode ser nulo");
+    }
+
+    @Test
+    public void postUser_whenAnotherUserHasSameUsername_receiveBadRequest() {
+        userRepository.save(createValidUser());
+
+        User user = createValidUser();
+        ResponseEntity<Object> response = postSignup(user, Object.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
 
 
     public <T> ResponseEntity<T> postSignup(Object request, Class<T> responseType) {
