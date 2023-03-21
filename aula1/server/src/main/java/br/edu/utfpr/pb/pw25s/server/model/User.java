@@ -20,8 +20,8 @@ public class User {
     private long id;
 
     @UniqueUsername
-    @NotNull(message = "{br.edu.pb.utfpr.tads.pw25s.username.NotNull.message}")
-    @Size(min = 4, max = 50)
+    @NotNull(message = "{br.edu.utfpr.pb.pw26s.server.user.username.constraints.NotNull.message}")
+    @Size(min = 4, max = 50, message = "{br.edu.utfpr.pb.pw26s.server.user.username.constraints.Size.message}")
     @Column(length = 50)
     private String username;
 
@@ -30,9 +30,9 @@ public class User {
     @Column(length = 50, name = "display_name")
     private String displayName;
 
-    @NotNull
+    @NotNull(message = "{br.edu.utfpr.pb.pw26s.server.user.password.constraints.NotNull.message}")
     @Size(min = 6)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{br.edu.utfpr.pb.pw26s.server.user.password.constraints.Pattern.message}")
     private String password;
 
 }

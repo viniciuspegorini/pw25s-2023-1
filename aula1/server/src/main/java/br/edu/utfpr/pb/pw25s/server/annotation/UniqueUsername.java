@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueUsername {
-    String message() default "O usuário informado já existe!";
+    String message() default "{br.edu.utfpr.pb.pw26s.server.user.username.constraints.UniquyeUsername.message}";
 
     Class<?>[] groups() default {};
 
