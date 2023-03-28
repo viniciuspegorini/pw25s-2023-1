@@ -36,34 +36,4 @@ public class UserController {
         return genericResponse;
     }
 
-    @ExceptionHandler({MethodArgumentNotValidException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handlerValidationException(MethodArgumentNotValidException exception,
-                                               HttpServletRequest request) {
-        BindingResult result = exception.getBindingResult();
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError : result.getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-
-        return new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation error!",
-                                request.getServletPath(), validationErrors);
-    }
-
-    @ExceptionHandler({IllegalStateException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handlerValidationException(IllegalStateException exception,
-                                               HttpServletRequest request) {
-        return new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation error!",
-                request.getServletPath(), null);
-    }
-
-    @ExceptionHandler({HttpMessageNotReadableException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handlerValidationException(HttpMessageNotReadableException exception,
-                                               HttpServletRequest request) {
-        return new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation error!",
-                request.getServletPath(), null);
-    }
-
 }
