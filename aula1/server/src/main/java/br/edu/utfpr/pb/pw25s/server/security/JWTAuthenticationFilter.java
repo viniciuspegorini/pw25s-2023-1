@@ -69,6 +69,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
+
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withExpiresAt(

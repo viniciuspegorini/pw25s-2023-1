@@ -52,7 +52,7 @@ public class WebSecurity {
                 .authenticationManager(authenticationManager)
                 .addFilter(new JWTAuthenticationFilter(authenticationManager, authService))
                 //Filtro de Autorização
-                
+
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) ;
 
         return http.build();
