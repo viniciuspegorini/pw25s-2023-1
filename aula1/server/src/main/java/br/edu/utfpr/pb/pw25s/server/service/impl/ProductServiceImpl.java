@@ -6,12 +6,14 @@ import br.edu.utfpr.pb.pw25s.server.repository.CategoryRepository;
 import br.edu.utfpr.pb.pw25s.server.repository.ProductRepository;
 import br.edu.utfpr.pb.pw25s.server.service.CategoryService;
 import br.edu.utfpr.pb.pw25s.server.service.ProductService;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends CrudServiceImpl<Product, Long>
+            implements ProductService {
 
     private static ProductRepository productRepository;
 
@@ -20,27 +22,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product create(Product product) {
-        return productRepository.save(product);
-    }
-
-    @Override
-    public Product update(Product product) {
-        return productRepository.save(product);
-    }
-
-    @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
-    }
-
-    @Override
-    public Product findOne(Long id) {
-        return productRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public void delete(Long id) {
-        productRepository.deleteById(id);
+    protected JpaRepository<Product, Long> getRepository() {
+        return productRepository;
     }
 }

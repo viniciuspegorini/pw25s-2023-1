@@ -3,30 +3,36 @@ package br.edu.utfpr.pb.pw25s.server.controller;
 import br.edu.utfpr.pb.pw25s.server.dto.CategoryDTO;
 import br.edu.utfpr.pb.pw25s.server.model.Category;
 import br.edu.utfpr.pb.pw25s.server.service.CategoryService;
+import br.edu.utfpr.pb.pw25s.server.service.CrudService;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("categories")
-public class CategoryController {
+public class CategoryController extends CrudController<Category, CategoryDTO, Long> {
 
     private static CategoryService categoryService;
     private static ModelMapper modelMapper;
 
     public CategoryController(CategoryService categoryService,
                               ModelMapper modelMapper) {
+        super(Category.class, CategoryDTO.class);
         this.categoryService = categoryService;
         this.modelMapper = modelMapper;
     }
 
+    @Override
+    protected CrudService<Category, Long> getService() {
+        return this.categoryService;
+    }
+
+    @Override
+    protected ModelMapper getModelMapper() {
+        return this.modelMapper;
+    }
+}
+
+/*
     @PostMapping // http://localhost:8025/categories
     public ResponseEntity<CategoryDTO> create(@RequestBody @Valid CategoryDTO category) {
         Category categorySaved = categoryService.create( convertToEntity( category ) );
@@ -71,8 +77,5 @@ public class CategoryController {
     private CategoryDTO convertToDTO(Category category) {
         return modelMapper.map(category, CategoryDTO.class);
     }
-
-
-
-
 }
+ */

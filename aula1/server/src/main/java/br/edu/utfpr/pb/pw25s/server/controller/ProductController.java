@@ -1,34 +1,37 @@
 package br.edu.utfpr.pb.pw25s.server.controller;
 
-import br.edu.utfpr.pb.pw25s.server.error.ApiError;
+import br.edu.utfpr.pb.pw25s.server.dto.ProductDTO;
 import br.edu.utfpr.pb.pw25s.server.model.Product;
+import br.edu.utfpr.pb.pw25s.server.service.CrudService;
 import br.edu.utfpr.pb.pw25s.server.service.ProductService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("products")
-public class ProductController {
+public class ProductController extends CrudController<Product, ProductDTO, Long> {
 
     private static ProductService productService;
 
-    public ProductController(ProductService productService) {
+    private static ModelMapper modelMapper;
+
+    public ProductController(ProductService productService, ModelMapper modelMapper) {
+        super(Product.class, ProductDTO.class);
         this.productService = productService;
+        this.modelMapper = modelMapper;
     }
 
-    @PostMapping // http://localhost:8025/categories
+    @Override
+    protected CrudService<Product, Long> getService() {
+        return this.productService;
+    }
+
+    @Override
+    protected ModelMapper getModelMapper() {
+        return this.modelMapper;
+    }
+}
+    /*@PostMapping // http://localhost:8025/categories
     public ResponseEntity<Product> create(@RequestBody @Valid Product product) {
         productService.create(product);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -61,3 +64,4 @@ public class ProductController {
     }
 
 }
+*/
