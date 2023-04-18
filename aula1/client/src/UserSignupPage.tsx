@@ -1,31 +1,30 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useState } from "react";
 
 export function UserSignupPage() {
   const [form, setForm] = useState({
     displayName: "",
     username: "",
     password: "",
-  })
+  });
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const {value, name} = event.target
-    setForm( (previousForm) => {
-        return {
-            ...previousForm,
-            [name]: value
-        }
-    })
-  }
+    const { value, name } = event.target;
+    setForm((previousForm) => {
+      return {
+        ...previousForm,
+        [name]: value,
+      };
+    });
+  };
 
   const onClickSignup = () => {
     const user = {
-        displayName: form.displayName,
-        username: form.username,
-        password: form.password,
-    }
-    console.log( user );
-  }
-
+      displayName: form.displayName,
+      username: form.username,
+      password: form.password,
+    };
+    console.log(user);
+  };
 
   return (
     <div className="container">
@@ -64,11 +63,10 @@ export function UserSignupPage() {
         />
       </div>
       <div className="text-center">
-        <button 
-            onClick={onClickSignup}
-            className="btn btn-primary">
-        Cadastrar</button>
+        <button onClick={onClickSignup} className="btn btn-primary">
+          Cadastrar
+        </button>
       </div>
     </div>
-  )
+  );
 }

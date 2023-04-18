@@ -38,14 +38,21 @@ public class WebSecurity {
         AuthenticationManager authenticationManager =
                 authenticationManagerBuilder.build();
 
+        //Configuração para funcionar o console do H2.
+        http.headers().frameOptions().disable();
+
         http.csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
-
+                .and()
+                .cors()
                 .and()
 
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users/**").permitAll()
+
+                .antMatchers("/h2-console/**").permitAll()
+
                 .anyRequest().authenticated()
 
                 .and()
