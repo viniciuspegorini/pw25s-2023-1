@@ -1,4 +1,4 @@
-# React  (back-end)
+# React  (front-end)
 
 ## Introdução
 
