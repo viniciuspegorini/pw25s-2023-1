@@ -1,5 +1,6 @@
-import axios from "axios";
 import { ChangeEvent, useState } from "react";
+import AuthService from "../service/AuthService";
+import { IUserLogin } from "../commons/interfaces";
 
 export function LoginPage() {
   const [form, setForm] = useState({
@@ -21,12 +22,12 @@ export function LoginPage() {
   };
 
   const onClickLogin = () => {
-    const user = {
+    const user: IUserLogin = {
       username: form.username,
       password: form.password,
     };
     console.log(user);
-    axios.post("http://localhost:8025/login", user)
+    AuthService.login(user)
           .then((response)=>{
             console.log(response.data);
             setUserAuthenticated(true);
@@ -70,7 +71,7 @@ export function LoginPage() {
       </div>
       <div className="text-center">
         <button onClick={onClickLogin} className="btn btn-primary">
-          Cadastrar
+          Login
         </button>
         {userAuthenticated && <div className="alert alert-success">Usuário autenticado com sucesso!</div>}
         {apiError && <div className="alert alert-danger">Falha ao autenticar o usuário.</div>}
