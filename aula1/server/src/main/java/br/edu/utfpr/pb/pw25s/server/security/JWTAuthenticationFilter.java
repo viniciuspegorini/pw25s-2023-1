@@ -42,8 +42,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         try {
             //HTTP.POST {"username":"admin", "password":"P4ssword"}
-            User credentials =  new ObjectMapper().readValue(
-                    request.getInputStream(),User.class);
+            User credentials =  new ObjectMapper().readValue(request.getInputStream(), User.class);
 
             User user = (User) authService.loadUserByUsername(credentials.getUsername());
 
