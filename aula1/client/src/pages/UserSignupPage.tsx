@@ -1,6 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import AuthService from "../service/AuthService";
 import { IUserSignup } from "../commons/interfaces";
+import { ButtonWithProgress } from "../components/ButtonWithProgress";
+import { Input } from "../components/Input";
+import { Link, useNavigate } from "react-router-dom";
 
 export function UserSignupPage() {
   const [form, setForm] = useState({
@@ -16,6 +19,8 @@ export function UserSignupPage() {
   const [apiError, setApiError] = useState(false);
   const [userSaved, setUserSaved] = useState(false);
   const [pendingApiCall, setPendingApiCall] = useState(false);
+  const navigate = useNavigate();
+
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -48,6 +53,7 @@ export function UserSignupPage() {
 
         setUserSaved(true);
         setApiError(false);
+        navigate("/");
       })
       .catch((responseError) => {
         setUserSaved(false);
@@ -69,68 +75,55 @@ export function UserSignupPage() {
   return (
     <div className="container">
       <h1 className="text-center">User Signup</h1>
+
       <div className="col-12 mb-3">
-        <label>Informe seu nome</label>
-        <input
-          className={
-            errors.displayName ? "form-control is-invalid" : "form-control"
-          }
+        <Input
+          label="Informe seu nome"
+          className="form-control"
           type="text"
           placeholder="Informe o seu nome"
           name="displayName"
           onChange={onChange}
           value={form.displayName}
+          hasError={errors.displayName ? true : false}
+          error={errors.displayName}
         />
-        {errors.displayName && (
-          <div className="invalid-feedback">{errors.displayName}</div>
-        )}
       </div>
+
       <div className="col-12 mb-3">
-        <label>Informe seu username = {form.username} </label>
-        <input
-          className={
-            errors.username ? "form-control is-invalid" : "form-control"
-          }
+        <Input
+          label="Informe seu username"
+          className="form-control"
           type="text"
           placeholder="Informe o seu username"
           name="username"
           onChange={onChange}
           value={form.username}
+          hasError={errors.username ? true : false}
+          error={errors.username}
         />
-        {errors.username && (
-          <div className="invalid-feedback">{errors.username}</div>
-        )}
       </div>
       <div className="col-12 mb-3">
-        <label>Informe sua senha</label>
-        <input
-          className={
-            errors.password ? "form-control is-invalid" : "form-control"
-          }
+        <Input
+          label="Informe a sua senha"
+          className="form-control"
           type="password"
           placeholder="Informe a sua senha"
           name="password"
           onChange={onChange}
           value={form.password}
+          hasError={errors.password ? true : false}
+          error={errors.password}
         />
-        {errors.password && (
-          <div className="invalid-feedback">{errors.password}</div>
-        )}
       </div>
       <div className="text-center">
-        <button 
-          onClick={onClickSignup} 
+        <ButtonWithProgress
+          onClick={onClickSignup}
           className="btn btn-primary"
           disabled={pendingApiCall}
-          >
-          {pendingApiCall && (
-            <div 
-              className="spinner-border text-light-spinner spinner-border-sm mr-sm-1"
-              role="status">
-            </div>
-          )}
-          Cadastrar
-        </button>
+          pendingApiCall={pendingApiCall}
+          text="Cadastrar"
+        />
         {userSaved && (
           <div className="alert alert-success">
             Usuário cadastrado com sucesso!
@@ -141,6 +134,10 @@ export function UserSignupPage() {
             Falha ao cadastrar o usuário.
           </div>
         )}
+      </div>
+      <div className="text-center">
+        <span>já possui cadastro? </span>
+        <Link to="/">Autenticar-se</Link>
       </div>
     </div>
   );
