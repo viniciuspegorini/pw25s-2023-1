@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from "react";
-import AuthService from "../service/AuthService";
-import { IUserLogin } from "../commons/interfaces";
-import { ButtonWithProgress } from "../components/ButtonWithProgress";
-import { Link } from "react-router-dom";
+import AuthService from "@/service/AuthService";
+import { IUserLogin } from "@/commons/interfaces";
+import { ButtonWithProgress } from "@/components/ButtonWithProgress";
+import { Link, useNavigate } from "react-router-dom";
 
 export function LoginPage() {
   const [form, setForm] = useState({
@@ -12,6 +12,7 @@ export function LoginPage() {
   const [apiError, setApiError] = useState(false);
   const [userAuthenticated, setUserAuthenticated] = useState(false);
   const [pendingApiCall, setPendingApiCall] = useState(false);
+  const navigate = useNavigate();
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -36,6 +37,8 @@ export function LoginPage() {
             console.log(response.data);
             setUserAuthenticated(true);
             setApiError(false);
+            localStorage.setItem("token", JSON.stringify(response.data.token));
+            navigate("/home");
           })
           .catch((responseError) => {
             console.log(responseError.response);
@@ -79,7 +82,7 @@ export function LoginPage() {
           className="btn btn-primary"
           disabled={pendingApiCall}
           pendingApiCall={pendingApiCall}
-          text="Cadastrar"
+          text="Autenticar"
         />
         {userAuthenticated && <div className="alert alert-success">Usuário autenticado com sucesso!</div>}
         {apiError && <div className="alert alert-danger">Falha ao autenticar o usuário.</div>}

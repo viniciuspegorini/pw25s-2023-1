@@ -1,9 +1,9 @@
-import { SignRoutes } from "./routes/SignRoutes"
+import { BaseRoutes } from "./routes/BaseRoutes"
 
 function App() {
   return (
     <>
-      <SignRoutes />
+      <BaseRoutes />
     </>
   )
 }
