@@ -4,6 +4,7 @@ import { UserSignupPage } from "../../pages/UserSignupPage";
 import { HomePage } from "../../pages/HomePage";
 import { CategoryListPage } from "../../pages/CategoryListPage";
 import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
+import { CategoryFormPage } from "@/pages/CategoryFormPage";
 
 export function BaseRoutes() {
   return (
@@ -18,6 +19,8 @@ export function BaseRoutes() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/categories" element={<CategoryListPage />} />
+            <Route path="/categories/new" element={<CategoryFormPage />} />
+            <Route path="/categories/:id" element={<CategoryFormPage />} />
         </Route>
 
       </Routes>
