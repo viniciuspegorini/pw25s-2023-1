@@ -34,8 +34,40 @@ export function ProductFormPage() {
 
   // Executa ao carregar o componente
   useEffect(() => {
-    // loadData();
+    loadData();
   }, []);
+
+  const loadData = async () => {
+    await CategoryService.findAll()
+      .then((response) => {
+        console.log(response.data);
+        setCategories(response.data);
+
+        setApiError("");
+      })
+      .catch((responseError) => {
+        setApiError("Falha ao carregar a lista de categorias");
+      });
+
+      if (id) {
+        ProductService.findOne( parseInt(id) ).then((response) => {
+          if (response.data) {
+            setForm({ ...response.data });
+          }
+          setApiError("");
+        })
+        .catch((responseError) => {
+          setApiError("Falha ao carregar o produto");
+        })
+      } else {
+        setForm((previousForm) => {
+          return {
+            ...previousForm,
+            category: { id: categories[0].id, name: ""},
+          };
+        });
+      }
+  };
 
   //Função utilizada para controlar as alterações nos Inputs e TextArea
   const onChange = (
@@ -80,6 +112,7 @@ export function ProductFormPage() {
       description: form.description,
       category: form.category,
     };
+    console.log(product);
     setPendingApiCall(true);
 
     ProductService.save(product)
@@ -141,7 +174,22 @@ export function ProductFormPage() {
       <div className="col-12 mb-3">
         <label>Categoria</label>
         
-        
+        <select 
+          className="form-control"
+          name="category"
+          value={form.category.id}
+          onChange={onChangeSelect}
+          >            
+            {/*Monsta a lista de option do select de acordo com a lista de categorias vinda do server*/}
+            {categories.map((category: ICategory) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))
+            }
+          </select>
+
+
         {errors.category && (
           <div className="invalid-feedback d-block">{errors.category}</div>
         )}

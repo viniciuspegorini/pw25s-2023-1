@@ -73,7 +73,7 @@ public abstract class CrudController <T, D, ID extends Serializable> {
     }
 
     @PostMapping
-    public ResponseEntity<D> create(@RequestBody @Valid D entity) {
+    public ResponseEntity<D> crea   te(@RequestBody @Valid D entity) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(convertToDto(getService().save(convertToEntity(entity))));
 
